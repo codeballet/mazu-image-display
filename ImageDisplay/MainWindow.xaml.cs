@@ -22,6 +22,9 @@ namespace ImageDisplay
     /// </summary>
     public partial class MainWindow : Window
     {
+        // Make sure imagePath points to the directory of AI generated images
+        private string imagePath = @"C:\Users\johan\source\repos\ImageDisplay\ImageDisplay\images\";
+
         private List<string>? imagePaths;
         private int currentIndex = 0;
         private DispatcherTimer timer;
@@ -56,7 +59,6 @@ namespace ImageDisplay
         private void LoadImagePaths()
         {
             // Load image paths from a folder
-            string imagePath = @"C:\Users\johan\source\repos\ImageDisplay\ImageDisplay\images\";
             imagePaths = new List<string>(Directory.GetFiles(imagePath, "*.png"));
         }
 
@@ -71,12 +73,11 @@ namespace ImageDisplay
             BitmapImage stretchedBitmap = StretchImage(uri);
             imageControl.Source = stretchedBitmap;
 
-            // Only update the currentIndex if newer images exists
+            // Stop iterating currentIndex when at last image in imagePaths
             if (currentIndex < imagePaths.Count - 1)
                 currentIndex++;
             //else
             //{
-            //    currentIndex--;
                 //timer.Stop();
                 //MessageBox.Show("All images displayed. Timer stopped.");
             //}
