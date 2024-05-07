@@ -34,10 +34,6 @@ namespace ImageDisplay
             InitializeComponent();
             InitializeTimer();
 
-
-            //DisplayImages();
-            //DisplayCurrentImage();
-
             // Set the WindowState to Maximized
             //this.WindowState = WindowState.Maximized;
 
