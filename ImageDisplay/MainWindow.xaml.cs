@@ -43,7 +43,7 @@ namespace ImageDisplay
 
         private void LoadImagePaths()
         {
-            // Load image paths from a folder
+            // Load image paths from directory imagePath
             imagePaths = new List<string>(Directory.GetFiles(imagePath, "*.png"));
         }
 
