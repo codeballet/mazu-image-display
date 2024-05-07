@@ -1,0 +1,14 @@
+﻿<Window x:Class="ImageDisplay.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ImageDisplay"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Image Name="imageControl" Stretch="Uniform" />
+        <Button Content="Previous" Click="PreviousButton_Click" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="20" />
+        <Button Content="Next" Click="NextButton_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="20" />
+    </Grid>
+</Window>
