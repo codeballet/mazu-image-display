@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
@@ -12,7 +13,7 @@ namespace ImageDisplay
     public partial class MainWindow : Window
     {
         // Make sure imagePath points to the directory of AI generated images
-        private string imagePath = @"C:\Users\johan\source\repos\ImageDisplay\ImageDisplay\images\";
+        private readonly string imagePath = @"C:\Users\johan\source\repos\ImageDisplay\ImageDisplay\images\";
 
         private List<string>? imagePaths;
         private int currentIndex = 0;
@@ -52,51 +53,38 @@ namespace ImageDisplay
             // Acquire all image paths, including newly added
             LoadImagePaths();
 
-            // Display images on the screen
-            Uri uri = new Uri(imagePaths[currentIndex]);
-            BitmapImage bitmapImage = new BitmapImage(uri);
-            BitmapImage stretchedBitmap = StretchImage(uri);
+            // Display image in the imageControl window
+            BitmapImage stretchedBitmap = StretchImage();
             imageControl.Source = stretchedBitmap;
 
             // Stop iterating currentIndex when at last image in imagePaths
             if (currentIndex < imagePaths.Count - 1)
                 currentIndex++;
-            //else
-            //{
-                //timer.Stop();
-                //MessageBox.Show("All images displayed. Timer stopped.");
-            //}
         }
 
-        private BitmapImage StretchImage(Uri uri)
+        private BitmapImage StretchImage()
         {
-            try
-            {
-                // Load the original square image
-                BitmapImage originalImage = new BitmapImage(uri);
+            Uri uri = new Uri(imagePaths[currentIndex]);
 
-                double originalWidth = originalImage.PixelWidth;
-                double originalHeight = originalImage.PixelHeight;
+            // Load the original square image
+            BitmapImage originalImage = new BitmapImage(uri);
 
-                // Calculate 16:9 ratio from square image
-                double newWidth = originalWidth * 16;
-                double newHeight = originalHeight * 9;
+            double originalWidth = originalImage.PixelWidth;
+            double originalHeight = originalImage.PixelHeight;
 
-                // Create a new BitmapImage with adjusted dimensions
-                BitmapImage stretchedImage = new BitmapImage();
-                stretchedImage.BeginInit();
-                stretchedImage.UriSource = uri;
-                stretchedImage.DecodePixelWidth = (int)newWidth;
-                stretchedImage.DecodePixelHeight = (int)newHeight;
-                stretchedImage.EndInit();
+            // Calculate 16:9 ratio from square image
+            double newWidth = originalWidth * 16;
+            double newHeight = originalHeight * 9;
 
-                return stretchedImage;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error loading or stretching the image: {ex.Message}");
-                return new BitmapImage(uri);
-            }
+            // Create a new BitmapImage with adjusted dimensions
+            BitmapImage stretchedImage = new BitmapImage();
+            stretchedImage.BeginInit();
+            stretchedImage.UriSource = uri;
+            stretchedImage.DecodePixelWidth = (int)newWidth;
+            stretchedImage.DecodePixelHeight = (int)newHeight;
+            stretchedImage.EndInit();
+
+            return stretchedImage;
         }
     }
 }
