@@ -47,19 +47,6 @@ namespace ImageDisplay
             imagePaths = new List<string>(Directory.GetFiles(imagePath, "*.png"));
         }
 
-        private void DisplayNextImage(object sender, EventArgs e)
-        {
-            // Acquire all image paths, including newly added
-            LoadImagePaths();
-
-            // Display image in the imageControl window
-            imageControl.Source = StretchImage();
-
-            // Stop iterating currentIndex when at last image in imagePaths
-            if (currentIndex < imagePaths.Count - 1)
-                currentIndex++;
-        }
-
         private BitmapImage StretchImage()
         {
             Uri uri = new Uri(imagePaths[currentIndex]);
@@ -83,6 +70,19 @@ namespace ImageDisplay
             stretchedImage.EndInit();
 
             return stretchedImage;
+        }
+
+        private void DisplayNextImage(object sender, EventArgs e)
+        {
+            // Acquire all image paths, including newly added
+            LoadImagePaths();
+
+            // Display image in the imageControl window
+            imageControl.Source = StretchImage();
+
+            // Stop iterating currentIndex when at last image in imagePaths
+            if (currentIndex < imagePaths.Count - 1)
+                currentIndex++;
         }
     }
 }
