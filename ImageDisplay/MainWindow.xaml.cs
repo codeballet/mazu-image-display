@@ -10,6 +10,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Timers;
+using System.Windows.Threading;
+using System;
+
 
 namespace ImageDisplay
 {
@@ -20,40 +24,89 @@ namespace ImageDisplay
     {
         private List<string>? imagePaths;
         private int currentIndex = 0;
+        private DispatcherTimer timer;
 
         public MainWindow()
         {
             InitializeComponent();
             LoadImagePaths();
-            DisplayCurrentImage();
+            InitializeTimer();
+
+
+            //DisplayImages();
+            //DisplayCurrentImage();
 
             // Set the WindowState to Maximized
-            this.WindowState = WindowState.Maximized;
+            //this.WindowState = WindowState.Maximized;
 
             // Set the WindowStyle to None
-            this.WindowStyle = WindowStyle.None;
+            //this.WindowStyle = WindowStyle.None;
 
             // Optionally, set the Window as topmost
             //this.Topmost = true;
         }
 
+        private void InitializeTimer()
+        {
+            timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(1);
+            timer.Tick += DisplayNextImage;
+            timer.Start();
+        }
+
         private void LoadImagePaths()
         {
-            // Load image paths from a folder (adjust the path as needed)
+            // Load image paths from a folder
             string imagePath = @"C:\Users\johan\source\repos\ImageDisplay\ImageDisplay\images\";
             imagePaths = new List<string>(Directory.GetFiles(imagePath, "*.png"));
         }
 
-        private void DisplayCurrentImage()
+        private void DisplayNextImage(object sender, EventArgs e)
         {
-            if (imagePaths is not null && currentIndex >= 0 && currentIndex < imagePaths.Count)
+            if (currentIndex < imagePaths.Count)
             {
                 Uri uri = new Uri(imagePaths[currentIndex]);
-                BitmapImage bitmap = new BitmapImage(new Uri(imagePaths[currentIndex]));
+                BitmapImage bitmapImage = new BitmapImage(uri);
                 BitmapImage stretchedBitmap = StretchImage(uri);
                 imageControl.Source = stretchedBitmap;
+                currentIndex++;
+            }
+            else
+            {
+                timer.Stop();
+                MessageBox.Show("All images displayed. Timer stopped.");
             }
         }
+
+        //private void DisplayImages()
+        //{
+        //    if (imagePaths is not null)
+        //    {
+        //        foreach (string path in imagePaths)
+        //        {
+        //            Uri uri = new Uri(path);
+        //            Console.WriteLine(uri.ToString());
+        //            BitmapImage bitmapImage = new BitmapImage(uri);
+        //            BitmapImage stretchedBitmap = StretchImage(uri);
+        //            imageControl.Source = stretchedBitmap;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        Console.WriteLine("imagePaths empty");
+        //    }
+        //}
+
+        //private void DisplayCurrentImage()
+        //{
+        //    if (imagePaths is not null && currentIndex >= 0 && currentIndex < imagePaths.Count)
+        //    {
+        //        Uri uri = new Uri(imagePaths[currentIndex]);
+        //        BitmapImage bitmap = new BitmapImage(new Uri(imagePaths[currentIndex]));
+        //        BitmapImage stretchedBitmap = StretchImage(uri);
+        //        imageControl.Source = stretchedBitmap;
+        //    }
+        //}
 
         private BitmapImage StretchImage(Uri uri)
         {
@@ -93,22 +146,22 @@ namespace ImageDisplay
             }
         }
 
-        private void NextButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (imagePaths is not null)
-            {
-                currentIndex = (currentIndex + 1) % imagePaths.Count;
-                DisplayCurrentImage();
-            }
-        }
+        //private void NextButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (imagePaths is not null)
+        //    {
+        //        currentIndex = (currentIndex + 1) % imagePaths.Count;
+        //        DisplayCurrentImage();
+        //    }
+        //}
 
-        private void PreviousButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (imagePaths is not null)
-            {
-                currentIndex = (currentIndex - 1 + imagePaths.Count) % imagePaths.Count;
-                DisplayCurrentImage();
-            }
-        }
+        //private void PreviousButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (imagePaths is not null)
+        //    {
+        //        currentIndex = (currentIndex - 1 + imagePaths.Count) % imagePaths.Count;
+        //        DisplayCurrentImage();
+        //    }
+        //}
     }
 }
