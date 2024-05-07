@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.IO;
+﻿using System.IO;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
@@ -54,8 +53,7 @@ namespace ImageDisplay
             LoadImagePaths();
 
             // Display image in the imageControl window
-            BitmapImage stretchedBitmap = StretchImage();
-            imageControl.Source = stretchedBitmap;
+            imageControl.Source = StretchImage();
 
             // Stop iterating currentIndex when at last image in imagePaths
             if (currentIndex < imagePaths.Count - 1)
