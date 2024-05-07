@@ -29,7 +29,6 @@ namespace ImageDisplay
         public MainWindow()
         {
             InitializeComponent();
-            LoadImagePaths();
             InitializeTimer();
 
 
@@ -63,19 +62,24 @@ namespace ImageDisplay
 
         private void DisplayNextImage(object sender, EventArgs e)
         {
-            if (currentIndex < imagePaths.Count)
-            {
-                Uri uri = new Uri(imagePaths[currentIndex]);
-                BitmapImage bitmapImage = new BitmapImage(uri);
-                BitmapImage stretchedBitmap = StretchImage(uri);
-                imageControl.Source = stretchedBitmap;
+            // Acquire all image paths, including newly added
+            LoadImagePaths();
+
+            // Display images on the screen
+            Uri uri = new Uri(imagePaths[currentIndex]);
+            BitmapImage bitmapImage = new BitmapImage(uri);
+            BitmapImage stretchedBitmap = StretchImage(uri);
+            imageControl.Source = stretchedBitmap;
+
+            // Only update the currentIndex if newer images exists
+            if (currentIndex < imagePaths.Count - 1)
                 currentIndex++;
-            }
-            else
-            {
-                timer.Stop();
-                MessageBox.Show("All images displayed. Timer stopped.");
-            }
+            //else
+            //{
+            //    currentIndex--;
+                //timer.Stop();
+                //MessageBox.Show("All images displayed. Timer stopped.");
+            //}
         }
 
         //private void DisplayImages()
