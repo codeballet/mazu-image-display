@@ -8,7 +8,5 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <Image Name="imageControl" Stretch="Uniform" />
-        <!--<Button Content="Previous" Click="PreviousButton_Click" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="20" />-->
-        <!--<Button Content="Next" Click="NextButton_Click" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="20" />-->
     </Grid>
 </Window>
