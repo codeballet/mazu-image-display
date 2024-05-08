@@ -12,7 +12,7 @@ namespace ImageDisplay
     public partial class MainWindow : Window
     {
         // Make sure imagePath points to the directory of AI generated images
-        private readonly string imagePath = @"C:\Users\johan\source\repos\ImageDisplay\ImageDisplay\images\";
+        private readonly string imagePath = @"C:\Users\johan\source\repos\images\";
 
         private List<string>? imagePaths;
         private int currentIndex = 0;
