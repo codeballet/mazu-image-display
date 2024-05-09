@@ -9,14 +9,14 @@ namespace ImageDisplay
     /// <summary>
     /// Showing images from a folder in fullscreen window
     /// </summary>
+
     public partial class MainWindow : Window
     {
-        // Make sure imagePath points to the directory of AI generated images
-        //private readonly string imagePath = @"C:\Users\johan\source\repos\images\";
-        private readonly string imagePath = @"\\wsl.localhost\Ubuntu\home\johan\code\mazu\mazu-webapp\mazusea\output\";
+        // Path to the AI generated image
 
-        private List<string>? imagePaths;
-        private int currentIndex = 0;
+        //private readonly string imagePath = @"C:\Users\johan\source\repos\images\img.png";
+        private readonly string imagePath = @"\\wsl.localhost\Ubuntu\home\johan\code\mazu\mazu-webapp\mazusea\output\img.png";
+
         private DispatcherTimer timer;
 
         public MainWindow()
@@ -37,53 +37,41 @@ namespace ImageDisplay
         private void InitializeTimer()
         {
             timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(1);
-            timer.Tick += DisplayNextImage;
+            timer.Interval = TimeSpan.FromSeconds(2);
+            timer.Tick += DisplayImage;
             timer.Start();
         }
 
-        private void LoadImagePaths()
+        private void DisplayImage(object sender, EventArgs e)
         {
-            // Load image paths from directory imagePath
-            imagePaths = new List<string>(Directory.GetFiles(imagePath, "*.png"));
-        }
+            try
+            {
+                Uri uri = new Uri(imagePath);
 
-        private BitmapImage StretchImage()
-        {
-            Uri uri = new Uri(imagePaths[currentIndex]);
+                // Load the original square image
+                BitmapImage originalImage = new BitmapImage(uri);
 
-            // Load the original square image
-            BitmapImage originalImage = new BitmapImage(uri);
+                double originalWidth = originalImage.PixelWidth;
+                double originalHeight = originalImage.PixelHeight;
 
-            double originalWidth = originalImage.PixelWidth;
-            double originalHeight = originalImage.PixelHeight;
+                // Calculate 16:9 ratio from square image
+                double newWidth = originalWidth * 16;
+                double newHeight = originalHeight * 9;
 
-            // Calculate 16:9 ratio from square image
-            double newWidth = originalWidth * 16;
-            double newHeight = originalHeight * 9;
+                // Create a new BitmapImage with adjusted dimensions
+                BitmapImage stretchedImage = new BitmapImage();
+                stretchedImage.BeginInit();
+                stretchedImage.UriSource = uri;
+                stretchedImage.DecodePixelWidth = (int)newWidth;
+                stretchedImage.DecodePixelHeight = (int)newHeight;
+                stretchedImage.EndInit();
 
-            // Create a new BitmapImage with adjusted dimensions
-            BitmapImage stretchedImage = new BitmapImage();
-            stretchedImage.BeginInit();
-            stretchedImage.UriSource = uri;
-            stretchedImage.DecodePixelWidth = (int)newWidth;
-            stretchedImage.DecodePixelHeight = (int)newHeight;
-            stretchedImage.EndInit();
-
-            return stretchedImage;
-        }
-
-        private void DisplayNextImage(object sender, EventArgs e)
-        {
-            // Acquire all image paths, including newly added
-            LoadImagePaths();
-
-            // Display image in the imageControl window
-            imageControl.Source = StretchImage();
-
-            // Stop iterating currentIndex when at last image in imagePaths
-            if (currentIndex < imagePaths.Count - 1)
-                currentIndex++;
+                imageControl.Source = stretchedImage;
+            }
+            catch
+            {
+                Console.WriteLine("No file found");
+            }
         }
     }
 }
