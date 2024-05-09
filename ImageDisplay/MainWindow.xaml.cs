@@ -12,7 +12,8 @@ namespace ImageDisplay
     public partial class MainWindow : Window
     {
         // Make sure imagePath points to the directory of AI generated images
-        private readonly string imagePath = @"C:\Users\johan\source\repos\images\";
+        //private readonly string imagePath = @"C:\Users\johan\source\repos\images\";
+        private readonly string imagePath = @"\\wsl.localhost\Ubuntu\home\johan\code\mazu\mazu-webapp\mazusea\output\";
 
         private List<string>? imagePaths;
         private int currentIndex = 0;
